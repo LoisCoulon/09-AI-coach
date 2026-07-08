@@ -3,17 +3,26 @@ import { useAuth } from '../context/useAuth';
 import { useProfile } from '../context/useProfile';
 import type { UserProfile } from '../types/UserProfile';
 
-export default function ProfileForm() {
-  const [age, setAge] = useState<number>();
-  const [weight, setWeight] = useState<number>();
-  const [height, setHeight] = useState<number>();
-  const [gender, setGender] = useState<'male' | 'female' | null>(null);
+interface ProfileFormProps {
+  profile?: UserProfile;
+  onCancel?: () => void;
+}
+
+export default function ProfileForm({ profile, onCancel }: ProfileFormProps) {
+  const [age, setAge] = useState<number | undefined>(profile?.age);
+  const [weight, setWeight] = useState<number | undefined>(profile?.weight);
+  const [height, setHeight] = useState<number | undefined>(profile?.height);
+  const [gender, setGender] = useState<'male' | 'female' | null>(
+    profile?.gender ?? null,
+  );
   const [activityLevel, setActivityLevel] = useState<
-    'sedentary' | 'light' | 'moderate' | 'active' | 'veryActive' | null
-  >(null);
-  const [goal, setGoal] = useState<'lose' | 'maintain' | 'gain' | null>(null);
+    UserProfile['activityLevel'] | null
+  >(profile?.activityLevel ?? null);
+  const [goal, setGoal] = useState<UserProfile['goal'] | null>(
+    profile?.goal ?? null,
+  );
   const { user } = useAuth();
-  const { saveProfile } = useProfile();
+  const { saveProfile, updateProfile } = useProfile();
 
   async function handleSave() {
     if (
@@ -27,18 +36,32 @@ export default function ProfileForm() {
     )
       return;
 
-    const newProfile: Omit<UserProfile, 'id'> = {
-      user_id: user.id,
-      age,
-      weight,
-      height,
-      gender,
-      activityLevel,
-      goal,
-    };
+    if (profile) {
+      const updatedProfile: UserProfile = {
+        user_id: user.id,
+        age,
+        weight,
+        height,
+        gender,
+        activityLevel,
+        goal,
+      };
+      await updateProfile(updatedProfile);
+    } else {
+      // Mode création : pas d'id encore
+      const newProfile: Omit<UserProfile, 'id'> = {
+        user_id: user.id,
+        age,
+        weight,
+        height,
+        gender,
+        activityLevel,
+        goal,
+      };
+      await saveProfile(newProfile);
+    }
 
-    await saveProfile(newProfile);
-    console.log(newProfile);
+    onCancel?.();
   }
 
   function handleAgeChange(event: React.ChangeEvent<HTMLInputElement>) {

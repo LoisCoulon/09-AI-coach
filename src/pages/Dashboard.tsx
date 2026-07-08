@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import ProfileForm from '../components/ProfileForm';
 import { useProfile } from '../context/useProfile';
 import type { UserProfile } from '../types/UserProfile';
 import calculateTDEE from '../utils/calculateTDEE';
 export default function Dashboard() {
   const { profile } = useProfile();
+  const [isEditing, setIsEditing] = useState<boolean>(false);
 
   function getActivityLabel(level: UserProfile['activityLevel']): string {
     switch (level) {
@@ -34,11 +36,17 @@ export default function Dashboard() {
     }
   }
 
+  function openForm() {
+    setIsEditing(true);
+  }
+
   return (
     <>
-      <h1>Dashboard</h1>
+      <h1>Tableau de bord</h1>
       {!profile ? (
         <ProfileForm />
+      ) : isEditing ? (
+        <ProfileForm profile={profile} onCancel={() => setIsEditing(false)} />
       ) : (
         <div className="flex gap-2 mb-3">
           <span>Age : {profile.age}ans</span>
@@ -50,6 +58,9 @@ export default function Dashboard() {
           <p className="text-l font-bold mt-4">
             Besoin calorique quotidien : {calculateTDEE(profile)} kcal
           </p>
+          <div>
+            <button onClick={openForm}>Modifier mon profil</button>
+          </div>
         </div>
       )}
     </>
