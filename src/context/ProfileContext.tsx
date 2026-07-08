@@ -3,6 +3,7 @@ import { useAuth } from './useAuth';
 import type { UserProfile } from '../types/UserProfile';
 import { supabase } from '../config/supabase';
 import { ProfileContext } from './ProfileContextInstance';
+import { fromDbProfile, toDbProfile } from '../utils/profileMapper';
 
 interface ProfileProviderProps {
   children: React.ReactNode;
@@ -15,21 +16,18 @@ export default function ProfileProvider({ children }: ProfileProviderProps) {
   async function saveProfile(newProfile: Omit<UserProfile, 'id'>) {
     const { data, error } = await supabase
       .from('user_profiles')
-      .insert([newProfile])
+      .insert([toDbProfile(newProfile)])
       .select()
       .single();
-    if (error) {
-      throw error;
-    }
-    if (data) {
-      setProfile(data);
-    }
+
+    if (error) throw error;
+    if (data) setProfile(fromDbProfile(data));
   }
 
   async function updateProfile(updatedProfile: UserProfile) {
     const { error } = await supabase
       .from('user_profiles')
-      .update(updatedProfile)
+      .update(toDbProfile(updatedProfile))
       .eq('id', updatedProfile.id);
     if (error) {
       throw error;
@@ -46,11 +44,11 @@ export default function ProfileProvider({ children }: ProfileProviderProps) {
         .eq('user_id', user.id)
         .single();
 
-      if (error) {
+      if (error && error.code !== 'PGRST116') {
         console.log(error);
         return;
       }
-      setProfile(data);
+      setProfile(data ? fromDbProfile(data) : null);
     }
     fetchProfile();
   }, [user]);
