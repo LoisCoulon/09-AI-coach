@@ -1,5 +1,4 @@
 export interface UserProfile {
-  id: number;
   user_id: string;
   age: number;
   weight: number;

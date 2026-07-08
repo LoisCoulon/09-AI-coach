@@ -16,7 +16,6 @@ export function toDbProfile(profile: Omit<UserProfile, 'id'>) {
 // Convert a line from the database (snake_case) to the app format (camelCase)
 export function fromDbProfile(data: any): UserProfile {
   return {
-    id: data.id,
     user_id: data.user_id,
     age: data.age,
     weight: data.weight,

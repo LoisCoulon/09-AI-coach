@@ -3,7 +3,7 @@ import type { UserProfile } from '../types/UserProfile';
 
 interface ProfileContextType {
   profile: UserProfile | null;
-  saveProfile: (profile: Omit<UserProfile, 'id'>) => Promise<void>;
+  saveProfile: (profile: UserProfile) => Promise<void>;
   updateProfile: (profile: UserProfile) => Promise<void>;
 }
 

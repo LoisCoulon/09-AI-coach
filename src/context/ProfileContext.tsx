@@ -28,7 +28,7 @@ export default function ProfileProvider({ children }: ProfileProviderProps) {
     const { error } = await supabase
       .from('user_profiles')
       .update(toDbProfile(updatedProfile))
-      .eq('id', updatedProfile.id);
+      .eq('user_id', updatedProfile.user_id);
     if (error) {
       throw error;
     }
