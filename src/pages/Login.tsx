@@ -29,12 +29,14 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-[#141414] flex items-center justify-center px-4">
-      <div className="bg-black/75 rounded-md p-12 w-full max-w-md">
-        <h1 className="text-white text-3xl font-bold mb-8">Se connecter</h1>
+    <div className="min-h-screen bg-[#F5F1EA] flex items-center justify-center px-4">
+      <div className="bg-white border border-[#E5DFD3] rounded-xl p-10 w-full max-w-md">
+        <h1 className="text-[#3D3929] text-2xl font-semibold mb-8">
+          Se connecter
+        </h1>
 
         {error && (
-          <p className="bg-[#e87c03]/20 text-[#e87c03] text-sm rounded px-3 py-2 mb-4">
+          <p className="bg-red-50 text-red-600 text-sm rounded-md px-4 py-2.5 mb-4">
             {error}
           </p>
         )}
@@ -44,27 +46,30 @@ export default function Login() {
             type="text"
             placeholder="Adresse email"
             onChange={handleEmailChange}
-            className="bg-[#333] text-white text-sm rounded px-4 py-3.5 focus:outline-none focus:bg-[#454545] placeholder-gray-400"
+            className="bg-[#FAF8F4] border border-[#E5DFD3] text-[#3D3929] text-sm rounded-md px-4 py-3 focus:outline-none focus:border-[#D97757] placeholder-[#8A8478]"
           />
           <input
             type="password"
             placeholder="Mot de passe"
             onChange={handlePasswordChange}
-            className="bg-[#333] text-white text-sm rounded px-4 py-3.5 focus:outline-none focus:bg-[#454545] placeholder-gray-400"
+            className="bg-[#FAF8F4] border border-[#E5DFD3] text-[#3D3929] text-sm rounded-md px-4 py-3 focus:outline-none focus:border-[#D97757] placeholder-[#8A8478]"
           />
         </div>
 
         <button
           onClick={handleSignIn}
-          className="w-full bg-[#E50914] hover:bg-[#f6121d] text-white font-bold py-3 rounded transition-colors mb-6"
+          className="w-full bg-[#D97757] hover:bg-[#c56847] text-white font-medium py-3 rounded-md transition-colors mb-6 cursor-pointer"
         >
           Se connecter
         </button>
 
-        <p className="text-gray-400 text-sm">
-          Nouveau sur Sport Tracker ?{' '}
-          <Link to="/signup" className="text-white hover:underline">
-            Inscrivez-vous maintenant
+        <p className="text-[#8A8478] text-sm">
+          Nouveau sur Coach Nutrition ?{' '}
+          <Link
+            to="/signup"
+            className="text-[#D97757] hover:underline font-medium"
+          >
+            Inscrivez-vous
           </Link>
         </p>
       </div>
