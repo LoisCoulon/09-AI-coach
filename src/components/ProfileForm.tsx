@@ -4,9 +4,9 @@ import { useProfile } from '../context/useProfile';
 import type { UserProfile } from '../types/UserProfile';
 
 export default function ProfileForm() {
-  const [age, setAge] = useState<number | null>();
-  const [weight, setWeight] = useState<number | null>();
-  const [height, setHeight] = useState<number | null>();
+  const [age, setAge] = useState<number>();
+  const [weight, setWeight] = useState<number>();
+  const [height, setHeight] = useState<number>();
   const [gender, setGender] = useState<'male' | 'female' | null>(null);
   const [activityLevel, setActivityLevel] = useState<
     'sedentary' | 'light' | 'moderate' | 'active' | 'veryActive' | null
