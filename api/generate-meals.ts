@@ -35,10 +35,23 @@ Réponds UNIQUEMENT avec un JSON valide, sans texte avant ou après, au format e
     );
 
     const data = await response.json();
-    const textResponse = data.candidates[0].content.parts[0].text;
+    console.log(
+      "Réponse complète de l'API Gemini:",
+      JSON.stringify(data, null, 2),
+    );
 
+    if (data.error) {
+      return res.status(503).json({
+        error:
+          'Le service de génération est temporairement surchargé, réessayez dans quelques instants.',
+      });
+    }
+
+    const textResponse = data.candidates[0].content.parts[0].text;
+    console.log('Réponse brute de Gemini:', textResponse);
     res.status(200).json(JSON.parse(textResponse));
   } catch (error) {
+    console.error('ERREUR DÉTAILLÉE:', error);
     res.status(500).json({ error: 'Failed to generate meals' });
   }
 }

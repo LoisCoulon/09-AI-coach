@@ -4,6 +4,7 @@ import type { MealSuggestions } from '../types/MealSuggestion';
 interface MealSuggestionContextType {
   suggestions: MealSuggestions[];
   isLoading: boolean;
+  error: string;
   generateMeals: (targetCalories: number, goal: string) => Promise<void>;
 }
 

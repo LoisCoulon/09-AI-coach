@@ -4,9 +4,11 @@ import { useProfile } from '../context/useProfile';
 import type { UserProfile } from '../types/UserProfile';
 import calculateTDEE from '../utils/calculateTDEE';
 import Navbar from '../components/Navbar';
+import { useMealSuggestions } from '../context/useMealSuggestions';
 export default function Dashboard() {
   const { profile } = useProfile();
   const [isEditing, setIsEditing] = useState<boolean>(false);
+  const { generateMeals, isLoading, error } = useMealSuggestions();
 
   function getActivityLabel(level: UserProfile['activityLevel']): string {
     switch (level) {
@@ -39,6 +41,12 @@ export default function Dashboard() {
 
   function openForm() {
     setIsEditing(true);
+  }
+
+  async function handleGenerateMeals() {
+    if (!profile) return;
+    const targetCalories = calculateTDEE(profile);
+    await generateMeals(targetCalories, profile.goal);
   }
 
   return (
@@ -113,12 +121,28 @@ export default function Dashboard() {
               </p>
             </div>
 
-            <button
-              onClick={openForm}
-              className="text-[#D97757] hover:text-[#c56847] text-sm font-medium transition-colors cursor-pointer"
-            >
-              Modifier mon profil →
-            </button>
+            <div className="flex justify-around">
+              <button
+                onClick={openForm}
+                className="text-[#D97757] hover:text-[#c56847] text-sm font-medium transition-colors cursor-pointer"
+              >
+                Modifier mon profil →
+              </button>
+              {error && (
+                <p className="bg-red-50 text-red-600 text-sm rounded-md px-4 py-2.5 mt-3">
+                  {error}
+                </p>
+              )}
+              <button
+                disabled={isLoading}
+                onClick={handleGenerateMeals}
+                className="bg-[#D97757] hover:bg-[#c56847] text-white text-sm font-medium px-4 py-2 rounded-md transition-colors cursor-pointer"
+              >
+                {isLoading
+                  ? 'Génération en cours...'
+                  : 'Générer mes repas du jour'}
+              </button>
+            </div>
           </div>
         )}
       </div>
