@@ -3,7 +3,7 @@ import { useMealSuggestions } from '../context/useMealSuggestions';
 
 export default function History() {
   const { suggestions } = useMealSuggestions();
-  const sortedSuggestions = suggestions.sort((a, b) =>
+  const sortedSuggestions = [...suggestions].sort((a, b) =>
     b.date.localeCompare(a.date),
   );
   return (
@@ -15,15 +15,12 @@ export default function History() {
         </h1>
         {sortedSuggestions &&
           sortedSuggestions.map((suggestion) => (
-            <div>
+            <div key={suggestion.id}>
               <p className="font-medium text-[#3D3929] m-2">
                 {suggestion.date}
               </p>
 
-              <div
-                key={suggestion.id}
-                className="grid grid-cols-4 gap-1 mr-1 ml-1"
-              >
+              <div className="grid grid-cols-4 gap-1 mr-1 ml-1">
                 {suggestion.meals.map((meal, index) => (
                   <div
                     key={index}
