@@ -5,6 +5,7 @@ import type { UserProfile } from '../types/UserProfile';
 import calculateTDEE from '../utils/calculateTDEE';
 import Navbar from '../components/Navbar';
 import { useMealSuggestions } from '../context/useMealSuggestions';
+import calculateTargetCalories from '../utils/calculateTargetCalories';
 export default function Dashboard() {
   const { profile } = useProfile();
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -46,7 +47,10 @@ export default function Dashboard() {
 
   async function handleGenerateMeals() {
     if (!profile) return;
-    const targetCalories = calculateTDEE(profile);
+    const targetCalories = calculateTargetCalories(
+      calculateTDEE(profile),
+      profile.goal,
+    );
     await generateMeals(targetCalories, profile.goal);
   }
 
@@ -118,7 +122,8 @@ export default function Dashboard() {
                 Besoin calorique quotidien
               </p>
               <p className="text-[#D97757] text-3xl font-bold">
-                {calculateTDEE(profile)} <span className="text-lg">kcal</span>
+                {calculateTargetCalories(calculateTDEE(profile), profile.goal)}{' '}
+                <span className="text-lg">kcal</span>
               </p>
             </div>
 
