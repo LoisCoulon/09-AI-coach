@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/useAuth';
 import { useState } from 'react';
 
@@ -24,6 +24,16 @@ export default function Navbar() {
         Coach Nutrition
       </h1>
       <div className="flex items-center gap-4">
+        <Link className="hover:text-[#D97757] focus:text-[#D97757]" to="/">
+          Dashboard
+        </Link>
+        <Link
+          className="hover:text-[#D97757] focus:text-[#D97757]"
+          to="/history"
+        >
+          Historique
+        </Link>
+
         {error && <p className="text-red-500 text-xs">{error}</p>}
         <button
           onClick={handleSignOut}

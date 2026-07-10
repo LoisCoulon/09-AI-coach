@@ -8,7 +8,8 @@ import { useMealSuggestions } from '../context/useMealSuggestions';
 export default function Dashboard() {
   const { profile } = useProfile();
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const { generateMeals, isLoading, error } = useMealSuggestions();
+  const { generateMeals, isLoading, error, suggestions } = useMealSuggestions();
+  const lastSuggestion = suggestions[suggestions.length - 1];
 
   function getActivityLabel(level: UserProfile['activityLevel']): string {
     switch (level) {
@@ -145,6 +146,38 @@ export default function Dashboard() {
             </div>
           </div>
         )}
+        <div className="mt-6">
+          {lastSuggestion ? (
+            <div>
+              <h2 className="text-lg font-semibold text-[#3D3929] mb-4">
+                Repas du jour ({lastSuggestion.totalCalories} kcal)
+              </h2>
+              {lastSuggestion.meals.map((meal, index) => (
+                <div
+                  key={index}
+                  className="bg-white border border-[#E5DFD3] rounded-lg p-4 mb-3"
+                >
+                  <p className="font-medium text-[#3D3929]">{meal.name}</p>
+                  <p className="text-[#D97757] font-semibold">
+                    {meal.calories} kcal
+                  </p>
+                  <p className="text-sm text-[#8A8478]">
+                    Protéines : {meal.protein}g · Glucides : {meal.carbs}g ·
+                    Lipides : {meal.fat}g
+                  </p>
+                  <p className="text-sm text-[#8A8478] mt-2">Ingrédients :</p>
+                  <ul className="text-sm text-[#3D3929] list-disc list-inside">
+                    {meal.ingredients.map((ingredient, i) => (
+                      <li key={i}>{ingredient}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p>Aucun historique de repas pour le moment</p>
+          )}
+        </div>
       </div>
     </div>
   );

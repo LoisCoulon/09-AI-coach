@@ -49,6 +49,7 @@ export default function Login() {
             className="bg-[#FAF8F4] border border-[#E5DFD3] text-[#3D3929] text-sm rounded-md px-4 py-3 focus:outline-none focus:border-[#D97757] placeholder-[#8A8478]"
           />
           <input
+            onKeyDown={(e) => e.key === 'Enter' && handleSignIn}
             type="password"
             placeholder="Mot de passe"
             onChange={handlePasswordChange}
