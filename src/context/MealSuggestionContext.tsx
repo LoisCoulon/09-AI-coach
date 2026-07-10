@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth } from './useAuth';
 import type { MealSuggestions } from '../types/MealSuggestion';
 import { supabase } from '../config/supabase';
@@ -65,6 +65,28 @@ export default function MealSuggestionProvider({
       setIsLoading(false);
     }
   }
+  useEffect(() => {
+    async function fetchSuggestions() {
+      if (!user) return;
+
+      const { data, error } = await supabase
+        .from('meal_suggestions')
+        .select('*')
+        .eq('user_id', user.id);
+
+      if (error) {
+        console.log(error);
+        return;
+      }
+
+      if (data) {
+        setSuggestions(data.map(fromDbMealSuggestion));
+      }
+    }
+
+    fetchSuggestions();
+  }, [user]);
+
   return (
     <MealSuggestionContext.Provider
       value={{ suggestions, isLoading, generateMeals, error }}

@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/useAuth';
 import { useState } from 'react';
 
@@ -24,15 +24,26 @@ export default function Navbar() {
         Coach Nutrition
       </h1>
       <div className="flex items-center gap-4">
-        <Link className="hover:text-[#D97757] focus:text-[#D97757]" to="/">
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            isActive
+              ? 'text-[#D97757] font-medium'
+              : 'text-[#3D3929] hover:text-[#D97757] transition-colors'
+          }
+        >
           Dashboard
-        </Link>
-        <Link
-          className="hover:text-[#D97757] focus:text-[#D97757]"
+        </NavLink>
+        <NavLink
           to="/history"
+          className={({ isActive }) =>
+            isActive
+              ? 'text-[#D97757] font-medium'
+              : 'text-[#3D3929] hover:text-[#D97757] transition-colors'
+          }
         >
           Historique
-        </Link>
+        </NavLink>
 
         {error && <p className="text-red-500 text-xs">{error}</p>}
         <button

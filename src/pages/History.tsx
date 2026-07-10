@@ -13,7 +13,7 @@ export default function History() {
         <h1 className="text-2xl font-semibold text-[#3D3929] tracking-tight mb-8 text-center">
           Historique des repas
         </h1>
-        {sortedSuggestions ? (
+        {suggestions ? (
           sortedSuggestions.map((suggestion) => (
             <div key={suggestion.id}>
               <p className="font-medium text-[#3D3929] m-2">
@@ -46,7 +46,9 @@ export default function History() {
             </div>
           ))
         ) : (
-          <p>Aucun historique de repas pour le moment</p>
+          <p className="text-black text-xl">
+            Aucun historique de repas pour le moment
+          </p>
         )}
       </div>
     </div>
