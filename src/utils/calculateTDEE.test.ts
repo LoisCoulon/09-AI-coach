@@ -5,7 +5,6 @@ import calculateTDEE from './calculateTDEE';
 describe('calculateTDEE', () => {
   it('calcule correctement le TDEE pour un homme modérément actif', () => {
     const profile: UserProfile = {
-      id: 1,
       user_id: 'test-user',
       age: 30,
       weight: 80,
@@ -18,7 +17,6 @@ describe('calculateTDEE', () => {
   });
   it('calcule correctement le TDDE pour une femme légèrement active', () => {
     const profile: UserProfile = {
-      id: 2,
       user_id: 'test-user',
       age: 25,
       weight: 60,
